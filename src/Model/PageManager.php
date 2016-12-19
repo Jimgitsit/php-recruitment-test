@@ -48,4 +48,50 @@ class PageManager
 	    $statement->bindParam(':pageId', $pageId, \PDO::PARAM_INT);
 	    return $statement->execute();
     }
+    
+    public function getTotalPagesByUser(User $user)
+    {
+    	$userId = $user->getUserId();
+    	$query = <<<SQL
+SELECT COUNT(*) FROM pages AS p
+INNER JOIN websites AS w ON w.website_id = p.website_id
+WHERE w.user_id = :userId
+SQL;
+    	$statement = $this->database->prepare($query);
+	    $statement->bindParam('userId', $userId, \PDO::PARAM_INT);
+	    $statement->execute();
+	    return $statement->fetchColumn();
+    }
+    
+    public function getMostRecentlyVisitedPageByUser(User $user)
+    {
+	    $userId = $user->getUserId();
+	    $query = <<<SQL
+SELECT w.hostname, p.url FROM pages AS p
+INNER JOIN websites AS w ON w.website_id = p.website_id
+WHERE w.user_id = :userId
+ORDER BY p.last_visit DESC LIMIT 1
+SQL;
+	    $statement = $this->database->prepare($query);
+	    $statement->bindParam('userId', $userId, \PDO::PARAM_INT);
+	    $statement->execute();
+	    $row = $statement->fetch(\PDO::FETCH_ASSOC);
+	    return $row['hostname'] . '/' . $row['url'];
+    }
+	
+	public function getLeastRecentlyVisitedPageByUser(User $user)
+	{
+		$userId = $user->getUserId();
+		$query = <<<SQL
+SELECT w.hostname, p.url FROM pages AS p
+INNER JOIN websites AS w ON w.website_id = p.website_id
+WHERE w.user_id = :userId
+ORDER BY p.last_visit ASC LIMIT 1
+SQL;
+		$statement = $this->database->prepare($query);
+		$statement->bindParam('userId', $userId, \PDO::PARAM_INT);
+		$statement->execute();
+		$row = $statement->fetch(\PDO::FETCH_ASSOC);
+		return $row['hostname'] . '/' . $row['url'];
+	}
 }
