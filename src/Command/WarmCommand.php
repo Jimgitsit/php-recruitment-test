@@ -3,6 +3,7 @@
 namespace Snowdog\DevTest\Command;
 
 use Snowdog\DevTest\Model\PageManager;
+use Snowdog\DevTest\Model\Page;
 use Snowdog\DevTest\Model\WebsiteManager;
 use Symfony\Component\Console\Output\OutputInterface;
 use DateTime;
@@ -40,7 +41,10 @@ class WarmCommand
             $warmer->setHostname($website->getHostname());
             $warmer->setActor($actor);
 
-            foreach ($pages as $page) {
+            // For Task 5, not sure what needs to be done with the varnish here, if anything.
+            
+	        /** @var Page $page */
+	        foreach ($pages as $page) {
                 $warmer->warm($page->getUrl());
                 $this->pageManager->setLastVisit($page, new DateTime());
             }

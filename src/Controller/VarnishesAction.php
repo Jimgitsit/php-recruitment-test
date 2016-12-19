@@ -5,6 +5,7 @@ namespace Snowdog\DevTest\Controller;
 use Snowdog\DevTest\Model\UserManager;
 use Snowdog\DevTest\Model\Varnish;
 use Snowdog\DevTest\Model\VarnishManager;
+use Snowdog\DevTest\Model\Website;
 use Snowdog\DevTest\Model\WebsiteManager;
 
 class VarnishesAction
@@ -55,14 +56,15 @@ class VarnishesAction
     {
         $websites = $this->varnishManager->getWebsites($varnish);
         $ids = [];
-        foreach($websites as $website) {
+        /** @var Website $website */
+	    foreach($websites as $website) {
             $ids[] = $website->getWebsiteId();
         }
         return $ids;
     }
 
-    public function execute() {
-
+    public function execute() 
+    {
         include __DIR__ . '/../view/varnish.phtml';
     }
 

@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label for="exampleInputName2">IP</label>
                     <input type="text" name="ip" class="form-control" id="exampleInputName2"
-                           placeholder="192.168.0.1">
+                           placeholder="ex: 192.168.0.1">
                 </div>
                 <button type="submit" class="btn btn-primary">Add Varnish</button>
             </form>
@@ -44,32 +44,42 @@
             <h1>Varnish Assignments</h1>
         </div>
 
-        <?php foreach ($this->getVarnishes() as $varnish): /** @var \Snowdog\DevTest\Model\Varnish $varnish */ ?>
-            <?php $websiteIds = $this->getAssignedWebsiteIds($varnish) ?>
-            <h2><?= $varnish->getIP() ?></h2>
-
-            <div class="padded">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Associated</th>
-                        <th>Name</th>
-                        <th>Hostname</th>
-                    </tr>
-                    <?php foreach ($this->getWebsites() as $website): /** @var \Snowdog\DevTest\Model\Website $website */ ?>
-                        <tr>
-                            <td><input type="checkbox" <?= in_array($website->getWebsiteId(), $websiteIds) ? 'checked="checked"' : '' ?>/></td>
-                            <td><?= $website->getName() ?></td>
-                            <td><?= $website->getHostname() ?></td>
-                        </tr>
-                    <?php endforeach ?>
-                </table>
-            </div>
-
-        <?php endforeach; ?>
+	    <div>
+	        <?php foreach ($this->getVarnishes() as $varnish): /** @var \Snowdog\DevTest\Model\Varnish $varnish */ ?>
+		        <div class="row varnish-instance">
+		            <?php $websiteIds = $this->getAssignedWebsiteIds($varnish) ?>
+			        
+		            <h2><?= $varnish->getIP() ?></h2>
+		
+			        <div class="row">
+				        <div class="col-sm-6">
+				            <div class="padded">
+				                <table class="table table-striped">
+				                    <tr>
+				                        <th>Associated</th>
+				                        <th>Name</th>
+				                        <th>Hostname</th>
+				                    </tr>
+				                    <?php foreach ($this->getWebsites() as $website): /** @var \Snowdog\DevTest\Model\Website $website */ ?>
+				                        <tr>
+				                            <td><input type="checkbox" class="assoc-check" data-varnish-id="<?= $varnish->getVarnishId() ?>" data-website-id="<?= $website->getWebsiteId() ?>" <?= in_array($website->getWebsiteId(), $websiteIds) ? 'checked="checked"' : '' ?>/></td>
+				                            <td><?= $website->getName() ?></td>
+				                            <td><?= $website->getHostname() ?></td>
+				                        </tr>
+				                    <?php endforeach ?>
+				                </table>
+				            </div>
+				        </div>
+			        </div>
+		        </div>
+	        <?php endforeach; ?>
+	    </div>
     </div>
 
 </div><!-- /.container -->
 
+<script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="/js/varnishes.js"></script>
 
 </body>
 </html>
