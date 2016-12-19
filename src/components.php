@@ -20,13 +20,13 @@ use Snowdog\DevTest\Menu\RegisterMenu;
 use Snowdog\DevTest\Menu\WebsitesMenu;
 
 RouteRepository::registerRoute('GET', '/', IndexAction::class, 'execute');
-RouteRepository::registerRoute('GET', '/login', LoginFormAction::class, 'execute');
 RouteRepository::registerRoute('POST', '/login', LoginAction::class, 'execute');
+RouteRepository::registerRoute('GET', '/login', LoginFormAction::class, 'execute');
 RouteRepository::registerRoute('GET', '/logout', LogoutAction::class, 'execute');
 RouteRepository::registerRoute('GET', '/register', RegisterFormAction::class, 'execute');
 RouteRepository::registerRoute('POST', '/register', RegisterAction::class, 'execute');
-RouteRepository::registerRoute('GET', '/website/{id:\d+}', WebsiteAction::class, 'execute');
 RouteRepository::registerRoute('POST', '/website', CreateWebsiteAction::class, 'execute');
+RouteRepository::registerRoute('GET', '/website/{id:\d+}', WebsiteAction::class, 'execute');
 RouteRepository::registerRoute('POST', '/page', CreatePageAction::class, 'execute');
 
 CommandRepository::registerCommand('migrate_db', MigrateCommand::class);
