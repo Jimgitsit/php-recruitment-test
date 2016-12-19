@@ -5,6 +5,7 @@ namespace Snowdog\DevTest\Command;
 use Snowdog\DevTest\Model\PageManager;
 use Snowdog\DevTest\Model\WebsiteManager;
 use Symfony\Component\Console\Output\OutputInterface;
+use DateTime;
 
 class WarmCommand
 {
@@ -41,6 +42,7 @@ class WarmCommand
 
             foreach ($pages as $page) {
                 $warmer->warm($page->getUrl());
+                $this->pageManager->setLastVisit($page, new DateTime());
             }
         } else {
             $output->writeln('<error>Website with ID ' . $id . ' does not exists!</error>');

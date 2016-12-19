@@ -3,6 +3,7 @@
 namespace Snowdog\DevTest\Model;
 
 use Snowdog\DevTest\Core\Database;
+use DateTime;
 
 class PageManager
 {
@@ -36,5 +37,15 @@ class PageManager
         $statement->bindParam(':website', $websiteId, \PDO::PARAM_INT);
         $statement->execute();
         return $this->database->lastInsertId();
+    }
+    
+    public function setLastVisit(Page $page, DateTime $dt) {
+	    $pageId = $page->getPageId();
+	    $dtStr = $dt->format('Y-m-d H:i:s');
+	    /** @var \PDOStatement $statement */
+	    $statement = $this->database->prepare('UPDATE pages SET last_visit = :lastVisit WHERE page_id = :pageId');
+	    $statement->bindParam(':lastVisit', $dtStr, \PDO::PARAM_STR);
+	    $statement->bindParam(':pageId', $pageId, \PDO::PARAM_INT);
+	    return $statement->execute();
     }
 }
